@@ -995,14 +995,11 @@ from spotmate;
 ---------------------- 예약 ------------------------
 DROP INDEX PK_reservation;
 
--- 테이블 삭제 : 예약
+/* 예약 */
 DROP TABLE reservation 
 	CASCADE CONSTRAINTS;
-    
--- 시퀀스 삭제
-drop sequence seq_reservation_no;
 
--- 테이블 생성 : 예약
+/* 예약 */
 CREATE TABLE reservation (
 	no NUMBER NOT NULL, /* 예약번호 */
 	mateNo NUMBER, /* 메이트번호 */
@@ -1011,16 +1008,11 @@ CREATE TABLE reservation (
 	regDate DATE, /* 날짜 */
 	point NUMBER, /* 사용포인트 */
 	status VARCHAR2(100), /* 상태(대기, 완료, 취소)   */
-	people NUMBER /* 인원 */
+	people NUMBER, /* 인원 */
+	lat NUMBER, /* 탑승자 위도 */
+	lng NUMBER /* 탑승자 경도 */
 );
 
--- 시퀀스 생성
-create sequence seq_reservation_no
-increment by 1 
-start with 1
-nocache;
-
--- comment
 COMMENT ON TABLE reservation IS '예약';
 
 COMMENT ON COLUMN reservation.no IS '예약번호';
@@ -1038,6 +1030,10 @@ COMMENT ON COLUMN reservation.point IS '사용포인트';
 COMMENT ON COLUMN reservation.status IS '상태(대기, 완료, 취소)  ';
 
 COMMENT ON COLUMN reservation.people IS '인원';
+
+COMMENT ON COLUMN reservation.lat IS '탑승자 위도';
+
+COMMENT ON COLUMN reservation.lng IS '탑승자 경도';
 
 CREATE UNIQUE INDEX PK_reservation
 	ON reservation (
