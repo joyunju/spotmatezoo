@@ -1477,6 +1477,92 @@ VALUES (SEQ_POINTUSAGE_NO.nextval, 6, '충전', '2022-08-12', +7000, +7000, 3);
 select *
 from pointUsage;
 
+---------------------- 포인트 환불 ------------------------
+DROP INDEX PK_pointRefund;
+
+-- 테이블 삭제
+DROP TABLE pointRefund 
+	CASCADE CONSTRAINTS;
+
+-- 시퀀스 삭제
+drop sequence seq_pointRefund_no;
+
+-- 테이블 생성 : 포인트환불
+CREATE TABLE pointRefund (
+	no NUMBER NOT NULL, /* 포인트환불번호 */
+	userNo NUMBER, /* 회원번호 */
+	regDate DATE, /* 날짜 */
+	accountNum VARCHAR2(100), /* 계좌번호 */
+	name VARCHAR2(100), /* 예금주명 */
+	status VARCHAR2(100), /* 상태(환불대기, 환불완료) */
+	point NUMBER /* 포인트 */
+);
+
+-- 시퀀스 생성
+create sequence seq_pointRefund_no
+increment by 1 
+start with 1
+nocache;
+
+-- comment
+COMMENT ON TABLE pointRefund IS '포인트환불';
+
+COMMENT ON COLUMN pointRefund.no IS '포인트환불번호';
+
+COMMENT ON COLUMN pointRefund.userNo IS '회원번호';
+
+COMMENT ON COLUMN pointRefund.regDate IS '날짜';
+
+COMMENT ON COLUMN pointRefund.accountNum IS '계좌번호';
+
+COMMENT ON COLUMN pointRefund.name IS '예금주명';
+
+COMMENT ON COLUMN pointRefund.status IS '상태(환불대기, 환불완료)';
+
+COMMENT ON COLUMN pointRefund.point IS '포인트';
+
+CREATE UNIQUE INDEX PK_pointRefund
+	ON pointRefund (
+		no ASC
+	);
+
+ALTER TABLE pointRefund
+	ADD
+		CONSTRAINT PK_pointRefund
+		PRIMARY KEY (
+			no
+		);
+
+ALTER TABLE pointRefund
+	ADD
+		CONSTRAINT FK_users_TO_pointRefund
+		FOREIGN KEY (
+			userNo
+		)
+		REFERENCES users (
+			no
+		);
+
+--insert
+INSERT INTO pointrefund VALUES (
+    seq_pointrefund_no.NEXTVAL,
+    3,
+    sysdate,
+    '테스트계좌',
+    '유지은',
+    '환불대기',
+    3000
+);
+
+insert into pointrefund
+values(seq_pointrefund_no.nextval, 2, sysdate, '테스트계좌', '양지훈', '환불대기', 3000);
+
+
+
+-- select
+select *
+from pointRefund;
+
 ---------------------- 공지사항 ------------------------
 DROP INDEX PK_ notice;
 
