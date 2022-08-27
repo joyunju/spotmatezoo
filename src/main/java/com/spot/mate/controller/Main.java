@@ -87,6 +87,11 @@ public class Main {
 		return "/main6";
 	}
 	
+	@RequestMapping(value="/base", method={RequestMethod.GET, RequestMethod.POST})
+	public String base() throws IOException {
+		return "/base";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value="/search", method={RequestMethod.GET, RequestMethod.POST})
 	public SearchVo search(@RequestBody SearchVo search) {
